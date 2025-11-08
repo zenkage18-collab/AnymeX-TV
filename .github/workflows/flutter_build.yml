@@ -14,12 +14,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Flutter
+      # 2. Setup Flutter (stable)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.0'   # Adjust if you need beta
-          channel: 'beta'
+          flutter-version: '3.27.0'
+          channel: 'stable'
           cache: true
 
       # 3. Verify Flutter
@@ -38,15 +38,15 @@ jobs:
       - name: Accept Android licenses
         run: yes | sdkmanager --licenses
 
-      # 7. Build split APKs
+      # 7. Build split APKs (unsigned)
       - name: Build split APKs
         run: flutter build apk --release --split-per-abi
 
-      # 8. Build App Bundle (AAB)
+      # 8. Build App Bundle (unsigned)
       - name: Build App Bundle
         run: flutter build appbundle --release
 
-      # 9. Upload artifacts (safely handles missing files)
+      # 9. Upload artifacts
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
         with:
