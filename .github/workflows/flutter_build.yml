@@ -13,11 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Flutter (Beta)
+      - name: Setup Flutter (Main channel)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.0-0.1.pre'
-          channel: 'beta'
+          channel: 'main'   # ✅ gets latest Dart (≥3.8.1)
           cache: true
 
       - name: Verify Flutter version
