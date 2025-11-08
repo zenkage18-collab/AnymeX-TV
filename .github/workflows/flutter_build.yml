@@ -14,17 +14,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install latest Flutter (from master)
+      - name: Install latest Flutter (master branch)
         run: |
           git clone https://github.com/flutter/flutter.git -b master
-          echo "$PWD/flutter/bin" >> $GITHUB_PATH
-          flutter --version
+          export PATH="$PATH:`pwd`/flutter/bin"
+          flutter doctor
 
       - name: Get dependencies
-        run: flutter pub get
+        run: |
+          export PATH="$PATH:`pwd`/flutter/bin"
+          flutter pub get
 
       - name: Build release APK
-        run: flutter build apk --release
+        run: |
+          export PATH="$PATH:`pwd`/flutter/bin"
+          flutter build apk --release
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
