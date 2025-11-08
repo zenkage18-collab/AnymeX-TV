@@ -14,26 +14,35 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Flutter (Stable 3.27.0)
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.27.0'
-          channel: 'stable'
-
-      - name: Check Flutter & Dart versions
-        run: flutter --version
+      # ✅ Manually install Flutter 3.27.0 with Dart 3.8.1+
+      - name: Install Flutter 3.27.0
+        run: |
+          git clone https://github.com/flutter/flutter.git --branch 3.27.0 --depth 1
+          echo "$PWD/flutter/bin" >> $GITHUB_PATH
+          export PATH="$PATH:$PWD/flutter/bin"
+          flutter --version
 
       - name: Get dependencies
-        run: flutter pub get
+        run: |
+          export PATH="$PATH:$PWD/flutter/bin"
+          flutter pub get
 
       - name: Build APKs for ARMv7 & ARM64
-        run: flutter build apk --release --split-per-abi
+        run: |
+          export PATH="$PATH:$PWD/flutter/bin"
+          flutter build apk --release --split-per-abi
 
       - name: Upload ARMv7 APK
         uses: actions/upload-artifact@v4
         with:
           name: AnymeX-TV-armv7
-          path: |
+          path: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+
+      - name: Upload ARM64 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AnymeX-TV-arm64
+          path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
             build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
 
       - name: Upload ARM64 APK
