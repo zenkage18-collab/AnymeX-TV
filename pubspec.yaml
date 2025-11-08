@@ -5,25 +5,26 @@ version: 3.0.2+24
 
 environment:
   sdk: ">=3.4.4 <4.0.0"
-  flutter: ">=3.0.0"
 
 dependencies:
-  algorithmic: ^0.0.11
-  blur: ^4.0.0
-  cached_network_image: ^3.4.1
-  carousel_slider: ^5.0.0
-  checkmark: ^0.0.2+1
-  device_info_plus: ^11.2.2
-  dio: ^5.8.0+1
-  dynamic_color: ^1.7.0
-  expandable_page_view: ^1.0.17
-  extended_image: ^10.0.1
-  file_picker: ^8.1.7
   flutter:
     sdk: flutter
-  flutter_dotenv: ^5.2.1
-  flutter_html: ^3.0.0
-  flutter_inappwebview: ^6.1.5
+
+  # ✅ Replaced the incompatible expressive_loading_indicator
+  loading_animation_widget: ^1.2.1
+
+  cupertino_icons: ^1.0.8
+  http: ^1.2.0
+  provider: ^6.1.2
+  cached_network_image: ^3.3.1
+  shared_preferences: ^2.2.2
+  flutter_svg: ^2.0.9
+  url_launcher: ^6.3.0
+  intl: ^0.19.0
+  connectivity_plus: ^5.0.2
+  fluttertoast: ^8.2.4
+  package_info_plus: ^5.0.1
+
   # flutter_local_notifications: ^18.0.1
   flutter_markdown: ^0.7.6
   flutter_native_splash: ^2.4.4
