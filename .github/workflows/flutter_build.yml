@@ -13,11 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Flutter
+      - name: Setup Flutter (Beta)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.3' # ✅ Includes Dart 3.4.4
-          channel: 'stable'
+          flutter-version: '3.27.0-0.1.pre'
+          channel: 'beta'
           cache: true
 
       - name: Verify Flutter version
@@ -26,15 +26,12 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # 🏗️ Build APKs for multiple ABIs
       - name: Build split APKs
         run: flutter build apk --release --split-per-abi
 
-      # 📦 Build universal app bundle
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release
 
-      # ⬆️ Upload all builds
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
         with:
