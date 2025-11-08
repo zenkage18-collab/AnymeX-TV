@@ -10,11 +10,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # ✅ Replaced the incompatible expressive_loading_indicator
+  # ✅ Replaced incompatible expressive_loading_indicator
   loading_animation_widget: ^1.2.1
 
   cupertino_icons: ^1.0.8
-  http: ^1.2.0
+  http: ^1.2.2
   provider: ^6.1.2
   cached_network_image: ^3.3.1
   shared_preferences: ^2.2.2
@@ -25,46 +25,6 @@ dependencies:
   fluttertoast: ^8.2.4
   package_info_plus: ^5.0.1
 
-  # flutter_local_notifications: ^18.0.1
-  flutter_markdown: ^0.7.6
-  flutter_native_splash: ^2.4.4
-  flutter_qjs:
-    git:
-      url: https://github.com/kodjodevf/flutter_qjs.git
-      ref: main
-  flutter_web_auth_2: ^4.0.2
-  get: ^4.6.6
-  grouped_list: ^6.0.0
-  hive: ^2.2.3
-  hive_flutter: ^1.1.0
-  html: any
-  http: ^1.2.2
-  http_interceptor: ^2.0.0
-  hugeicons: ^0.0.7
-  iconly: ^1.0.1
-  iconsax: ^0.0.8
-  install_plugin: ^2.1.0
-  intl: ^0.20.1
-  kenburns_nullsafety: ^1.0.1
-  media_kit:
-    git:
-      url: https://github.com/Schnitzel5/media-kit.git
-      path: media_kit
-  media_kit_video:
-    git:
-      url: https://github.com/Schnitzel5/media-kit.git
-      path: media_kit_video
-  media_kit_libs_video:
-    git:
-      url: https://github.com/Schnitzel5/media-kit.git
-      path: libs/universal/media_kit_libs_video
-  dartotsu_extension_bridge:
-    git:
-      url: https://github.com/RyanYuuki/DartotsuExtensionBridge.git
-      ref: master
-
-  outlined_text: ^1.0.1
-  package_info_plus: any
   path: ^1.9.0
   path_provider: any
   permission_handler: ^11.3.1
