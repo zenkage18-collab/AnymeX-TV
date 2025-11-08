@@ -1,4 +1,4 @@
-name: Build Flutter Android APK
+name: Build AnymeX-TV APKs (ARMv7 + ARM64)
 
 on:
   push:
@@ -14,24 +14,31 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install latest Flutter (master branch)
-        run: |
-          git clone https://github.com/flutter/flutter.git -b master
-          export PATH="$PATH:`pwd`/flutter/bin"
-          flutter doctor
+      - name: Set up Flutter (Stable 3.27.0)
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.0'
+          channel: 'stable'
+
+      - name: Check Flutter & Dart versions
+        run: flutter --version
 
       - name: Get dependencies
-        run: |
-          export PATH="$PATH:`pwd`/flutter/bin"
-          flutter pub get
+        run: flutter pub get
 
-      - name: Build release APK
+      - name: Build APKs for ARMv7 & ARM64
         run: |
-          export PATH="$PATH:`pwd`/flutter/bin"
-          flutter build apk --release
+          flutter build apk --release --split-per-abi
 
-      - name: Upload APK artifact
+      - name: Upload ARMv7 APK
         uses: actions/upload-artifact@v4
         with:
-          name: anymex-tv-release
+          name: AnymeX-TV-armv7
+          path: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+
+      - name: Upload ARM64 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AnymeX-TV-arm64
+          path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
           path: build/app/outputs/flutter-apk/app-release.apk
