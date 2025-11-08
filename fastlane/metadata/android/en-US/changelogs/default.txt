@@ -1,0 +1,18 @@
+### 🌟 Features
+-   added zoom functionality for manga
+
+### 🔧 Bug Fixes & Improvements
+-   fixed a moment of grey screen when switching services
+-   fixed volume indicator
+-   attempt at fixing macos crash
+-   fixed arrow keys navigation for manga
+
+### 🎨 Style Changes
+-   minor color adjustments on player ui
+-   styling adjustment of hold to speed up
+-   fixed overflowing ui and some changes on error images
+
+### 🧹 Chores & Documentation
+-   pubspec
+
+ 
