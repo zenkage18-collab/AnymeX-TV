@@ -14,11 +14,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Flutter (stable)
+      # 2. Setup Flutter (stable with Dart 3.8.x)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.0'
+          flutter-version: '3.28.1'  # stable version with Dart 3.8.x
           channel: 'stable'
           cache: true
 
