@@ -14,7 +14,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 🚀 Force-install Flutter 3.27.0 (includes Dart 3.8.1)
+      # 🚀 Force-install Flutter 3.27.0 (Dart 3.8.1)
       - name: Install Flutter 3.27.0 manually
         run: |
           rm -rf /opt/hostedtoolcache/flutter || true
@@ -24,16 +24,31 @@ jobs:
           flutter doctor -v
           flutter --version
 
-      # 🧱 Get dependencies
+      # 📦 Get dependencies
       - name: Get dependencies
         run: |
           export PATH="$PWD/flutter/bin:$PATH"
           flutter pub get
 
-      # 🏗️ Build for both ARMv7 & ARM64
+      # 🏗️ Build for ARMv7 + ARM64
       - name: Build APKs
         run: |
           export PATH="$PWD/flutter/bin:$PATH"
+          flutter build apk --release --split-per-abi
+
+      # 📤 Upload ARMv7 APK
+      - name: Upload ARMv7 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AnymeX-TV-armv7
+          path: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+
+      # 📤 Upload ARM64 APK
+      - name: Upload ARM64 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: AnymeX-TV-arm64
+          path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
           flutter build apk --release --split-per-abi
 
       # 📦 Upload ARMv7 APK
