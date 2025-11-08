@@ -16,7 +16,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2' # Compatible with Dart 3.6.0
+          flutter-version: '3.22.3' # ✅ Includes Dart 3.4.4
           channel: 'stable'
           cache: true
 
@@ -26,7 +26,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # 🏗️ Build APKs for multiple ABIs (arm64-v8a + armeabi-v7a)
+      # 🏗️ Build APKs for multiple ABIs
       - name: Build split APKs
         run: flutter build apk --release --split-per-abi
 
