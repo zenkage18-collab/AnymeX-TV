@@ -1,4 +1,4 @@
-name: Build AnymeX-TV (Flutter 3.27.0)
+name: Build Flutter Android APK
 
 on:
   push:
@@ -8,27 +8,34 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: ghcr.io/cirruslabs/flutter:3.27.0
 
     steps:
-      - name: Checkout source
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify Flutter/Dart versions
-        run: |
-          flutter --version
-          dart --version
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.2' # Dart 3.6.0 compatible
+          channel: 'stable'
+          cache: true
 
-      - name: Get dependencies
+      - name: Verify Flutter version
+        run: flutter --version
+
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: Build release APKs (split per ABI)
-        run: flutter build apk --release --split-per-abi
+      - name: Build release APK
+        run: flutter build apk --release
 
-      - name: Upload APKs
+      - name: Build App Bundle (AAB)
+        run: flutter build appbundle --release
+
+      - name: Upload release APK
         uses: actions/upload-artifact@v4
         with:
-          name: AnymeX-TV-APKs
+          name: anymex-tv-release
           path: |
-            build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/bundle/release/app-release.aab
