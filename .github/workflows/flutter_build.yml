@@ -2,13 +2,13 @@ name: Build AnymeX-TV APKs (ARMv7 + ARM64)
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     env:
       FLUTTER_HOME: ${{ github.workspace }}/flutter
       PATH: ${{ github.workspace }}/flutter/bin:/usr/local/bin:/usr/bin:/bin
@@ -21,6 +21,7 @@ jobs:
         run: |
           rm -rf $FLUTTER_HOME
           git clone https://github.com/flutter/flutter.git --branch 3.27.0 --depth 1 $FLUTTER_HOME
+          echo "$FLUTTER_HOME/bin" >> $GITHUB_PATH
           flutter doctor -v
           flutter --version
 
@@ -30,32 +31,10 @@ jobs:
       - name: Build APKs (split per ABI)
         run: flutter build apk --release --split-per-abi
 
-      - name: Upload ARMv7 APK
+      - name: Upload APKs
         uses: actions/upload-artifact@v4
         with:
-          name: AnymeX-TV-armv7
-          path: build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-
-      - name: Upload ARM64 APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: AnymeX-TV-arm64
-          path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-
-      - name: Upload ARM64 APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: AnymeX-TV-arm64
-          path: build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
-        uses: actions/upload-artifact@v4
-        with:
-          name: AnymeX-TV-armv7
+          name: AnymeX-TV-APKs
           path: |
             build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
-
-      - name: Upload ARM64 APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: AnymeX-TV-arm64
-          path: |
             build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
