@@ -16,7 +16,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.22.2' # Dart 3.6.0 compatible
+          flutter-version: '3.22.2' # Compatible with Dart 3.6.0
           channel: 'stable'
           cache: true
 
@@ -26,16 +26,21 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build release APK
-        run: flutter build apk --release
+      # 🏗️ Build APKs for multiple ABIs (arm64-v8a + armeabi-v7a)
+      - name: Build split APKs
+        run: flutter build apk --release --split-per-abi
 
+      # 📦 Build universal app bundle
       - name: Build App Bundle (AAB)
         run: flutter build appbundle --release
 
-      - name: Upload release APK
+      # ⬆️ Upload all builds
+      - name: Upload release artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: anymex-tv-release
+          name: anymex-tv-multiarch-release
           path: |
-            build/app/outputs/flutter-apk/app-release.apk
+            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+            build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+            build/app/outputs/flutter-apk/app-x86_64-release.apk
             build/app/outputs/bundle/release/app-release.aab
