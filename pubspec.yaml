@@ -27,10 +27,6 @@ dependencies:
   flutter_inappwebview: ^6.1.5
   flutter_markdown: ^0.7.6
   flutter_native_splash: ^2.4.4
-  flutter_qjs:
-  git:
-    url: https://github.com/kodjodevf/flutter_qjs.git
-    ref: f3cef51
   flutter_web_auth_2: ^4.0.2
   get: ^4.6.6
   grouped_list: ^6.0.0
