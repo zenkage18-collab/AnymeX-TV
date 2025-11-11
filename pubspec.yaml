@@ -44,7 +44,7 @@ dependencies:
   kenburns_nullsafety: ^1.0.1
 
   # ✅ Replace expressive_loading_indicator (Dart 3.8-only)
-  loading_animation_wi2.1
+  loading_animation_widget: ^2.1.0
 
   media_kit:
     git:
