@@ -37,23 +37,29 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # 6. Accept Android SDK licenses (safe replacement for sdkmanager)
+      # 6. Accept Android SDK licenses
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses
 
-      # 7. Build split APKs (unsigned)
+      # 7. Add swap space (prevents OOM on CI)
+      - name: Add swap space
+        run: |
+          sudo fallocate -l 4G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+
+      # 8. Full clean before build
+      - name: Full clean before build
+        run: |
+          rm -rf ~/.gradle/caches
+          flutter clean
+          flutter pub get
+
+      # 9. Build split APKs (unsigned)
       - name: Build split APKs
         run: flutter build apk --release --split-per-abi --no-shrink
 
-      # 8. Build App Bundle (unsigned)
+      # 10. Build App Bundle (unsigned)
       - name: Build App Bundle
         run: flutter build appbundle --release --no-shrink
-
-      # 9. Upload release artifacts
-      - name: Upload release artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: anymex-tv-multiarch-release
-          path: |
-            build/app/outputs/flutter-apk/*.apk
-            build/app/outputs/bundle/release/*.aab
