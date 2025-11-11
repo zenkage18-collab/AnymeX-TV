@@ -41,7 +41,7 @@ jobs:
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses
 
-      # 7. Add swap space (prevents OOM on CI)
+      # 7. Add swap space (avoid OOM)
       - name: Add swap space
         run: |
           sudo fallocate -l 4G /swapfile
@@ -56,10 +56,10 @@ jobs:
           flutter clean
           flutter pub get
 
-      # 9. Build split APKs (unsigned)
+      # 9. Build split APKs (verbose)
       - name: Build split APKs
-        run: flutter build apk --release --split-per-abi --no-shrink
+        run: flutter build apk --release --split-per-abi --no-shrink -v
 
-      # 10. Build App Bundle (unsigned)
+      # 10. Build App Bundle (verbose)
       - name: Build App Bundle
-        run: flutter build appbundle --release --no-shrink
+        run: flutter build appbundle --release --no-shrink -v
