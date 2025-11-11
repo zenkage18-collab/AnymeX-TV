@@ -10,38 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout repository
+      # 1. Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Flutter (compatible with Dart 3.8.1+)
+      # 2. Setup Flutter (Stable)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.7'   # Dart 3.8.1+
+          flutter-version: '3.35.7'
           channel: 'stable'
           cache: true
 
-      # 3. Verify Flutter setup
+      # 3. Verify Flutter version
       - name: Verify Flutter version
         run: flutter --version
 
-      # 4. Clean old builds
-      - name: Clean Flutter build
-        run: flutter clean
-
-      # 5. Repair cache and install dependencies (fixes missing packages)
-      - name: Repair Flutter pub cache
-        run: flutter pub cache repair
-
-      - name: Install dependencies
-        run: flutter pub get
-
-      # 6. Accept Android SDK licenses
+      # 4. Accept Android licenses
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses
 
-      # 7. Add swap space (avoid OOM)
+      # 5. Add swap space (prevent OOM)
       - name: Add swap space
         run: |
           sudo fallocate -l 4G /swapfile
@@ -49,17 +38,28 @@ jobs:
           sudo mkswap /swapfile
           sudo swapon /swapfile
 
-      # 8. Full clean before build
+      # 6. Full clean before build
       - name: Full clean before build
         run: |
           rm -rf ~/.gradle/caches
           flutter clean
           flutter pub get
 
-      # 9. Build split APKs (verbose)
+      # 7. Build split APKs (verbose, no code shrink)
       - name: Build split APKs
         run: flutter build apk --release --split-per-abi --no-shrink -v
 
-      # 10. Build App Bundle (verbose)
+      # 8. Build App Bundle (AAB, verbose, no shrink)
       - name: Build App Bundle
         run: flutter build appbundle --release --no-shrink -v
+
+      # 9. Upload release artifacts
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: anymex-tv-multiarch-release
+          path: |
+            build/app/outputs/flutter-apk/app-arm64-v8a-release.apk
+            build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk
+            build/app/outputs/flutter-apk/app-x86_64-release.apk
+            build/app/outputs/bundle/release/app-release.aab
