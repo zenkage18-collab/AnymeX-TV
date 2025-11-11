@@ -14,15 +14,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Flutter (stable with Dart 3.8.1+)
+      # 2. Setup Flutter (compatible with Dart 3.8.1+)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.7'  # includes Dart 3.8.1+
+          flutter-version: '3.35.7'   # Dart 3.8.1+
           channel: 'stable'
           cache: true
 
-      # 3. Verify Flutter
+      # 3. Verify Flutter setup
       - name: Verify Flutter version
         run: flutter --version
 
@@ -30,22 +30,26 @@ jobs:
       - name: Clean Flutter build
         run: flutter clean
 
-      # 5. Install dependencies
+      # 5. Repair cache and install dependencies (fixes missing packages)
+      - name: Repair Flutter pub cache
+        run: flutter pub cache repair
+
       - name: Install dependencies
         run: flutter pub get
 
-      # 6. Accept Android SDK licenses (fixed)
+      # 6. Accept Android SDK licenses (safe replacement for sdkmanager)
       - name: Accept Android licenses
         run: yes | flutter doctor --android-licenses
 
       # 7. Build split APKs (unsigned)
       - name: Build split APKs
-        run: flutter build apk --release --split-per-abi
+        run: flutter build apk --release --split-per-abi --no-shrink
 
       # 8. Build App Bundle (unsigned)
       - name: Build App Bundle
-        run: flutter build appbundle --release
-      # 9. Upload artifacts safely
+        run: flutter build appbundle --release --no-shrink
+
+      # 9. Upload release artifacts
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
         with:
