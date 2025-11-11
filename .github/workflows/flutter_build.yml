@@ -34,9 +34,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # 6. Accept Android SDK licenses
+      # 6. Accept Android SDK licenses (fixed)
       - name: Accept Android licenses
-        run: yes | sdkmanager --licenses
+        run: yes | flutter doctor --android-licenses
 
       # 7. Build split APKs (unsigned)
       - name: Build split APKs
@@ -45,7 +45,6 @@ jobs:
       # 8. Build App Bundle (unsigned)
       - name: Build App Bundle
         run: flutter build appbundle --release
-
       # 9. Upload artifacts safely
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
