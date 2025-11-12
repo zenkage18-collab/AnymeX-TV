@@ -11,7 +11,7 @@ jobs:
 
     # ✅ Use Java 17 for Gradle + Android
     env:
-      JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
+      JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
     steps:
       # 1. Checkout code
