@@ -11,7 +11,7 @@ android {
     // ndkVersion = flutter.ndkVersion
     ndkVersion = "27.0.12077973"
 
-     dependenciesInfo {
+    dependenciesInfo {
         includeInApk = false
         includeInBundle = false
     }
@@ -32,6 +32,7 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
+
     signingConfigs {
         release {
             def keystoreProperties = new Properties()
@@ -55,4 +56,12 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // Kotlin standard library
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+
+    // ✅ Add this to fix missing Protobuf references
+    implementation "com.google.protobuf:protobuf-lite:3.0.1"
 }
