@@ -9,6 +9,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # ✅ Use Java 17 for Gradle + Android
+    env:
+      JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
+
     steps:
       # 1. Checkout code
       - name: Checkout repository
@@ -26,11 +30,13 @@ jobs:
       - name: Verify Flutter version
         run: flutter --version
 
-      # 4. Accept Android licenses
-      - name: Accept Android licenses
-        run: yes | flutter doctor --android-licenses
+      # 4. ✅ Accept Android SDK licenses (only once, here)
+      - name: Accept Android Licenses
+        run: yes | sdkmanager --licenses
+        env:
+          JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
 
-      # 5. Add swap space (prevent OOM)
+      # 5. Add swap space (prevents Out Of Memory)
       - name: Add swap space
         run: |
           sudo fallocate -l 4G /swapfile
@@ -38,22 +44,22 @@ jobs:
           sudo mkswap /swapfile
           sudo swapon /swapfile
 
-      # 6. Full clean before build
+      # 6. Clean project and install dependencies
       - name: Full clean before build
         run: |
           rm -rf ~/.gradle/caches
           flutter clean
           flutter pub get
 
-      # 7. Build split APKs (verbose, no code shrink)
+      # 7. Build split APKs (unsigned, no shrink)
       - name: Build split APKs
         run: flutter build apk --release --split-per-abi --no-shrink -v
 
-      # 8. Build App Bundle (AAB, verbose, no shrink)
+      # 8. Build App Bundle (unsigned, no shrink)
       - name: Build App Bundle
         run: flutter build appbundle --release --no-shrink -v
 
-      # 9. Upload release artifacts
+      # 9. Upload built artifacts
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
         with:
