@@ -20,7 +20,7 @@ dependencies:
   dio: ^5.8.0+1
   dynamic_color: ^1.7.0
   expandable_page_view: ^1.0.17
-  expressive_loading_indicator: ^1.0.2
+  expressive_loading_indicator: ^0.0.1
   extended_image: ^10.0.1
   file_picker: ^8.1.7
   flutter_dotenv: ^5.2.1
