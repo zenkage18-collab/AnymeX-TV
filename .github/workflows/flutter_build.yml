@@ -9,16 +9,19 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    # ✅ Use Java 17 for Gradle + Android
-    env:
-      JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
-
     steps:
       # 1. Checkout code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Setup Flutter (Stable)
+      # 2. Setup Java 17 (required for Gradle & Android SDK)
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # 3. Setup Flutter (Stable)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -26,17 +29,15 @@ jobs:
           channel: 'stable'
           cache: true
 
-      # 3. Verify Flutter version
+      # 4. Verify Flutter version
       - name: Verify Flutter version
         run: flutter --version
 
-      # 4. ✅ Accept Android SDK licenses (only once, here)
+      # 5. Accept Android licenses (now Java + SDK are ready)
       - name: Accept Android Licenses
         run: yes | flutter doctor --android-licenses
-        env:
-         JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
 
-      # 5. Add swap space (prevents Out Of Memory)
+      # 6. Add swap space (prevent OOM)
       - name: Add swap space
         run: |
           sudo fallocate -l 4G /swapfile
@@ -44,22 +45,22 @@ jobs:
           sudo mkswap /swapfile
           sudo swapon /swapfile
 
-      # 6. Clean project and install dependencies
+      # 7. Clean project and get dependencies
       - name: Full clean before build
         run: |
           rm -rf ~/.gradle/caches
           flutter clean
           flutter pub get
 
-      # 7. Build split APKs (unsigned, no shrink)
+      # 8. Build split APKs (verbose, no shrink)
       - name: Build split APKs
         run: flutter build apk --release --split-per-abi --no-shrink -v
 
-      # 8. Build App Bundle (unsigned, no shrink)
+      # 9. Build App Bundle (AAB, verbose, no shrink)
       - name: Build App Bundle
         run: flutter build appbundle --release --no-shrink -v
 
-      # 9. Upload built artifacts
+      # 10. Upload release artifacts
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
         with:
